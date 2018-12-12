@@ -1,11 +1,13 @@
 package com.neal.nealcore.common;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neal.nealcore.exception.beans.impl.SystemExceptionDesc;
+import com.neal.nealcore.exception.impl.SystemException;
 import com.neal.nealcore.exception.impl.internal.framework.FrameworkInternalException;
-import com.neal.nealcore.gson.GsonExclusionStrategy;
 
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,28 +16,19 @@ public class CommonUtils {
 
     public static class JsonUtil {
 
-        private static Gson gson;
+        private static ObjectMapper mapper = new ObjectMapper();
 
-        static{
-            GsonBuilder builder = new GsonBuilder();
-            builder.setDateFormat(DateUtil.DATE_PATTERN.yyyy_MM_dd_HH_mm.toString());
-            builder.setExclusionStrategies(new GsonExclusionStrategy());
-            gson = builder.serializeNulls().create();
 
-        }
-
-        /**
-         * 获取 gson 对象
-         *
-         * @return
-         */
-        public static Gson getGson(){
-
-            return gson;
-        }
-
-        public static String object2Json(Object object){
-            return gson.toJson(object);
+        public static String object2Json(Object object) {
+            try {
+                StringWriter sw = new StringWriter();
+                JsonGenerator gen = new JsonFactory().createJsonGenerator(sw);
+                mapper.writeValue(gen, object);
+                gen.close();
+                return sw.toString();
+            }catch (Exception e){
+                throw new FrameworkInternalException(new SystemExceptionDesc(e));
+            }
         }
 
     }

@@ -10,7 +10,7 @@ import com.neal.nealcore.exception.impl.internal.framework.FrameworkInternalExce
 * @date ：2016年2月2日 下午5:05:23
 *
 */
-public abstract class SystemException extends BaseException {
+public class SystemException extends BaseException {
 
 	public SystemException(SystemExceptionDesc desc){
 		super(desc);
