@@ -27,7 +27,7 @@ public class CommonUtils {
                 gen.close();
                 return sw.toString();
             }catch (Exception e){
-                throw new FrameworkInternalException(new SystemExceptionDesc(e));
+                throw new FrameworkInternalException(new SystemExceptionDesc("0001","object2Json转换异常",e));
             }
         }
 
